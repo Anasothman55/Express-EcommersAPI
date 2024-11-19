@@ -17,7 +17,7 @@ const emailValidation =  check('email').isEmail().withMessage("Please enter vali
 
 const passwordValidation = (checks) =>{
   return(
-    check(checks)
+  check(checks)
   .isLength({ min: 8 })
   .withMessage("At least 8 characters")
   .custom((value, { req }) => {

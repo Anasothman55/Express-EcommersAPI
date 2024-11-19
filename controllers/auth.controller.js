@@ -199,7 +199,6 @@ export const logout = async (req,res,next)=>{
   }
 }
 
-
 export const forgotPassword = async(req,res,next)=>{
   const {email} =  req.body
 

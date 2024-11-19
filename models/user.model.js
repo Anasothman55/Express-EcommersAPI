@@ -25,7 +25,7 @@ const userSchema = new Schema({
   },
   isVerifide:{
     type: Boolean,
-    defaul: false
+    default: false
   },
   resetPasswordToken: String,
   resetPasswordExpiresAt: Date,

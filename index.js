@@ -18,15 +18,16 @@ app.use(express.json())
 app.use(cookieParser())
 
 import authRouter from './routes/auth.js'
+import adminRouter from './routes/admin.js'
+
 
 app.use(authRouter)
+app.use('/admin',adminRouter)
 
 app.listen(PORT,async ()=>{
   try {
-    // Connect to the database
     await connectDB();
 
-    // Check if the admin user already exists
     const user = await User.findOne({ username: "AnasAS" });
 
     if (!user) {
@@ -36,7 +37,7 @@ app.listen(PORT,async ()=>{
         username: "AnasAS",
         email: "anasothman581@gmail.com",
         password: hashedPassword,
-        isVerified: true,
+        isVerifide: true,
         role: "admin"
       });
 
