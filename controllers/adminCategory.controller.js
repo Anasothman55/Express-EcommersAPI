@@ -1,5 +1,5 @@
 import { Category } from "../models/category.model.js";
-import { User } from "../models/user.model.js"
+import { Product } from "../models/product.model.js";
 import { validationResult } from 'express-validator';
 
 export const getAllCategory = async (req, res) => {
@@ -59,7 +59,7 @@ export const addCategory = async (req, res) => {
     console.log("new category Create")
     return res.status(201).json({
       success: true,
-      message: "User create successfully",
+      message: "Category create successfully",
       category: newCategory
     })
 
@@ -144,6 +144,40 @@ export const updateCategory = async (req,res)=>{
     return res.status(500).json({
       success: false,
       message: "Failed to update category",
+      error: error.message,
+    });
+  }
+}
+
+export const getCatyegoryProduct = async (req,res)=>{
+  try {
+
+    const categoryId = req.params.categoryId
+
+    const category = await Category.findById(categoryId)
+
+    if(!category){
+      return res.status(400).json({
+        success:false,
+        message: "there are no category with this id"
+      })
+    }
+
+    const product = await Product.find({categoryId:categoryId},'productName userId brand price stockQuantity')
+
+    return res.status(200).json({
+      success: true,
+      respons:{
+        category:category,
+        product:product
+      },
+      message: "All category retrieved successfully",
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch category",
       error: error.message,
     });
   }
