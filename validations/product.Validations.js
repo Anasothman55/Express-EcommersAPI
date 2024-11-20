@@ -2,6 +2,11 @@ import { check } from "express-validator";
 import { Product } from "../models/product.model.js";
 
 
+const basicProduct = check('productName')
+.notEmpty()
+.withMessage('product name is required')
+.isLength({ min: 3, max: 100 })
+.withMessage('category must be between 3 and 100 characters')
 
 const productName = check('productName')
 .notEmpty()
@@ -39,6 +44,13 @@ const stockQuantity = check('stockQuantity')
 
 export const addProductValidator = [
   productName,
+  brand,
+  price,
+  stockQuantity
+]
+
+export const updateProductValidator = [
+  basicProduct,
   brand,
   price,
   stockQuantity

@@ -5,7 +5,7 @@ import {  getAllUsers, deleteUser, patchUserRole } from '../controllers/admin.co
 import { addCategory, deleteCategory, getAllCategory, getCatyegoryProduct, updateCategory } from '../controllers/adminCategory.controller.js'
 import { addCategoryValidator } from '../validations/category.Validations.js'
 import { addProduct, deleteProduct, getAllProduct, updateProduct } from '../controllers/adminProduct.controller.js'
-import { addProductValidator } from '../validations/product.Validations.js'
+import { addProductValidator, updateProductValidator } from '../validations/product.Validations.js'
 
 
 const router = express.Router()
@@ -28,7 +28,7 @@ router.get('/category/:categoryId',verfiyToken,checkAdmin,getCatyegoryProduct)
 router.get('/product',verfiyToken,checkAdmin,getAllProduct)
 router.post('/product/add-product/:categoryId',verfiyToken,checkAdmin,addProductValidator,addProduct)
 router.delete('/product/delete-product/:productId',verfiyToken,checkAdmin,deleteProduct)
-router.put('/product/update-product/:productId',verfiyToken,checkAdmin,addProductValidator,updateProduct)
+router.put('/product/update-product/:productId',verfiyToken,checkAdmin,updateProductValidator,updateProduct)
 
 
 export default router

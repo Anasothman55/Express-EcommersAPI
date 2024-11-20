@@ -7,11 +7,13 @@ import { validationResult } from 'express-validator';
 export const getAllProduct = async (req, res) => {
   try {
 
-    const {name} = req.query
+    const {name, brand,type} = req.query
 
     const filter = {};
     if (name) filter.productName = name
-
+    if(brand) filter.brand = brand
+    if (type) filter['specialDetails.type'] = type;
+    
     const product = await Product.find(filter);
     return res.status(200).json({
       success: true,

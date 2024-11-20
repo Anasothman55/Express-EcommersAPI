@@ -153,23 +153,33 @@ export const getCatyegoryProduct = async (req,res)=>{
   try {
 
     const categoryId = req.params.categoryId
+    const {type, brand} = req.query
+
+    const filter = { categoryId };
+    if (type) filter['specialDetails.type'] = type;
+    if (brand) filter.brand = brand;
 
     const category = await Category.findById(categoryId)
-
     if(!category){
       return res.status(400).json({
         success:false,
-        message: "there are no category with this id"
+        message: "No category found with the provided ID"
       })
     }
 
-    const product = await Product.find({categoryId:categoryId},'productName userId brand price stockQuantity')
+    const product = await Product.find(filter,'productName userId brand price stockQuantity specialDetails')
+    const sanitizedProducts = product.map((p) => ({
+      ...p._doc,
+      specialDetails: {
+        'type':p.specialDetails.get('type')
+      }
+    }));
 
     return res.status(200).json({
       success: true,
       respons:{
         category:category,
-        product:product
+        product:sanitizedProducts
       },
       message: "All category retrieved successfully",
     });
