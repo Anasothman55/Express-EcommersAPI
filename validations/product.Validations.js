@@ -1,18 +1,19 @@
 import { check } from "express-validator";
 import { Product } from "../models/product.model.js";
+import categoryList from "../utils/categoryList.js";
 
 
 const basicProduct = check('productName')
 .notEmpty()
 .withMessage('product name is required')
 .isLength({ min: 3, max: 100 })
-.withMessage('category must be between 3 and 100 characters')
+.withMessage('Product must be between 3 and 100 characters')
 
 const productName = check('productName')
 .notEmpty()
 .withMessage('product name is required')
 .isLength({ min: 3, max: 100 })
-.withMessage('category must be between 3 and 100 characters')
+.withMessage('Product must be between 3 and 100 characters')
 .custom(async (value, { req }) => {
   const product = await Product.findOne({ productName: value });
   if (product) {
@@ -41,12 +42,23 @@ const stockQuantity = check('stockQuantity')
 .isInt({ min: 0 })
 .withMessage('stockQuantity must be a non-negative integer')
 
+const category = check('category')
+.notEmpty()
+.withMessage('Category is required')
+.custom((value) => {
+  if (!categoryList.includes(value)) {
+    throw new Error(`Invalid category. Allowed categories are: ${categoryList.join(', ')}`);
+  }
+  return true; // Validation passed
+});
+
 
 export const addProductValidator = [
   productName,
   brand,
   price,
-  stockQuantity
+  stockQuantity,
+  category
 ]
 
 export const updateProductValidator = [

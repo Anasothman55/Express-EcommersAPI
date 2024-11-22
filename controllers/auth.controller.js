@@ -5,6 +5,8 @@ import { validationResult } from 'express-validator';
 import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { TokenBlacklist } from '../models/blackList.model.js';
+import { type } from 'os';
+import { response } from 'express';
 
 
 export const signUp = async (req,res,next)=>{
@@ -19,7 +21,6 @@ export const signUp = async (req,res,next)=>{
         message: errors.array(),
       })
     }
-
 
     const userAlreadyExists = await User.findOne({email: email})
 
@@ -136,7 +137,10 @@ export const login = async (req,res,next)=>{
     if(!user){
       return res.status(400).json({
         success:false,
-        message: "Invalide credential"
+        response:{
+          message: "Invalide credential",
+          type:"user"
+        },
       })
     }
 
@@ -146,7 +150,10 @@ export const login = async (req,res,next)=>{
     if(!isPasswordValide){
       return res.status(400).json({
         success:false,
-        message: "Invalide credential password wrong"
+        response:{
+          message: "Invalide credential password wrong",
+          type:"password"
+        }
       })
     }
 

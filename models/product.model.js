@@ -7,9 +7,8 @@ const productSchema = new Schema({
     required: true,
     unique: true
   },
-  categoryId: {
-    type: Schema.Types.ObjectId,
-    ref: 'Category',  // Assuming 'Category' is another model
+  category: {
+    type:String,
     required: true
   },
   userId: {
@@ -35,6 +34,10 @@ const productSchema = new Schema({
     required: true,
     min: 0
   },
+  isFeatured:{
+    type:Boolean,
+    default:false
+  }
 },{timestamps: true })
 
 export const Product = mongoose.model('Product', productSchema)

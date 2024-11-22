@@ -9,19 +9,18 @@ import cookieParser from 'cookie-parser'
 const PORT = 8000
 
 dotenv.config() 
-
 const app = express()
 
 app.use(cors({origin:"http://localhost:5173", credentials:true}))
-
 app.use(express.json())
 app.use(cookieParser())
 
 import authRouter from './routes/auth.js'
 import adminRouter from './routes/admin.js'
-
+import userRouter from './routes/user.js'
 
 app.use(authRouter)
+app.use(userRouter)
 app.use('/admin',adminRouter)
 
 app.listen(PORT,async ()=>{
