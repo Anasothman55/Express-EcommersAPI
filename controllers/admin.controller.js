@@ -4,7 +4,6 @@ import { validationResult } from 'express-validator';
 import categoryList from "../utils/categoryList.js";
 
 
-
 //? user controller
 export const getAllUsers = async (req, res) => {
   try {
@@ -111,33 +110,6 @@ export const getcategory = async(req,res)=>{
     return res.status(500).json({
       success: false,
       message: "Failed to fetch category",
-      error: error.message,
-    });
-  }
-}
-
-export const getProductByCategory = async(req,res)=>{
-  const category = req.params.categoryName
-  try {
-
-    if (!categoryList.includes(category)) {
-      return res.status(404).json({
-        success: false,
-        message: "Invalide category",
-      });
-    }
-    
-    const product = await Product.find({category: category})
-
-    return res.status(200).json({
-      success: true,
-      product:product,
-      message: "All product retrieved successfully",
-    });
-  } catch (error) {
-    return res.status(500).json({
-      success: false,
-      message: "Failed to fetch product",
       error: error.message,
     });
   }
@@ -295,6 +267,35 @@ export const updateProduct= async (req,res)=>{
       success: false,
       message: "Failed to update product",
       error: error.message,
+    });
+  }
+}
+
+export const toggalFeaturedProduct = async (req,res)=>{
+  const {productId} = req.params
+  try {
+    const product = await Product.findById(productId);
+    if(product){
+      product.isFeatured = !product.isFeatured
+
+      const updatedProduct = await product.save(); 
+      return res.status(201).json({
+        success: true,
+        message: `Product ${updatedProduct.productName} is now ${updatedProduct.isFeatured ? 'featured' : 'not featured'}.`,
+        product: updatedProduct,
+      });
+    }else{
+      return res.status(404).json({
+        success:false,
+        message: "Product not found"
+      })
+    }
+    
+  } catch (error) {
+    console.error('Error toggling featured product:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Internal server error',
     });
   }
 }

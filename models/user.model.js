@@ -11,6 +11,18 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
+  cartItems:[
+    {
+      quantity:{
+        type:Number,
+        default:0
+      },
+      product:{
+        type: Schema.Types.ObjectId,
+        ref:"Product"
+      }
+    }
+  ],
   username:{
     type: String,
     required: true
